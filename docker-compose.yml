@@ -1,21 +1,43 @@
-version: "3.9"
-
 services:
-  django:
-    build:
-      context: .
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-
   db:
-    image: postgres:14
+    image: postgres:latest
+    container_name: university-db
     environment:
       POSTGRES_DB: university
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 102712
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: ./django_project
+      dockerfile: Dockerfile
+    container_name: django-app
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DB_NAME=university
+      - DB_USER=postgres
+      - DB_PASSWORD=102712
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django_project:/app
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:

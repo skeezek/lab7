@@ -1,22 +1,20 @@
-FROM python:3.10-slim
+# Використовуємо офіційний образ Python
+FROM python:3.9-slim
 
-# Встановлення системних бібліотек
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    build-essential \
-    --no-install-recommends && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
+# Встановлюємо робочу директорію
 WORKDIR /app
 
 # Копіюємо requirements.txt
 COPY requirements.txt /app/
 
-# Встановлення Python-залежностей
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Встановлюємо залежності
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Копіюємо проект
+# Копіюємо весь проект
 COPY . /app/
 
+# Відкриваємо порт для Django
+EXPOSE 8000
+
+# Запускаємо сервер
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
