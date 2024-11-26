@@ -3,7 +3,7 @@ from psycopg2 import sql
 
 # Параметри підключення
 db_params = {
-    "dbname": "university",
+    "dbname": "app",
     "user": "postgres",
     "password": "102712",
     "host": "localhost",

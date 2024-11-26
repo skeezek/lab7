@@ -11,7 +11,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копіюємо весь проект
-COPY . /app/
+COPY .. /app/
 
 # Відкриваємо порт для Django
 EXPOSE 8000

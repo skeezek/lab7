@@ -3,7 +3,7 @@ from prettytable import PrettyTable
 
 # Підключення до бази даних PostgreSQL
 conn = psycopg2.connect(
-    dbname="university",
+    dbname="app",
     user="postgres",
     password="102712",
     host="localhost",
